@@ -1,0 +1,56 @@
+<div id="details" class="tab-pane" ng-init="hideTabBtns();resizeCol()">
+    <div ng-include src="'modules/commons/newBtn.html'"></div>
+    <div class="search-box">
+        <form class="navbar-form" role="search" ng-submit="resetPackagesNext(); requestMorePackages();">
+            <div class="form-group">
+                <input ng-model='searchquery' type="text" class="form-control" id="searchbar" placeholder="Search">
+            </div>
+        </form>
+    </div>
+    <div class="main-left-col" id="details-left-col">
+        <div class="left-col-inner">
+            <div class="pkg-details">
+                <h4>Details</h4>
+                <ul>
+                    <li>Sender: {{distribution.sender}}</li>
+                    <li>Job Name: {{distribution.notification.subject}}</li>
+                    <li>Date Sent: {{formatDate(distribution.sentDate)}}</li>
+                    <li>Expires On: {{formatDate(distribution.expiryDate)}}</li>
+                    <li>Number of recipients: {{distribution.recipients.length}}</li>
+                    <h5 class="detail-status">Current Status: <strong>{{toTitleCase(distribution.status.state)}}</strong></h5>
+                </ul>
+                <div class="details-proj">
+                    <ul>
+                        <li ng-class="{'enabled':distribution.options.watermark,'disabled':!distribution.options.watermark}">Watermarked</li>
+                        <li ng-class="{'enabled':!distribution.options.allowDownload,'disabled':distribution.options.allowDownload}">Stream Only</li>
+                        <li ng-class="{'enabled':distribution.options.allowDownload,'disabled':!distribution.options.allowDownload}">Download</li>
+                        <li ng-class="{'enabled':distribution.options.allowForward,'disabled':!distribution.options.allowForward}">Secure Forwarding</li>
+                        <li ng-class="{'enabled':distribution.options.protectLinks,'disabled':!distribution.options.protectLinks}">Link Protection </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="details-assets" ng-show="distribution.assets.length > 0">
+                <h4>Assets</h4>
+                <div ng-show="distribution.assetsMedia.length > 0">
+                    <h5>Audio/Video</h5>
+                    <ul>
+                        <li ng-repeat="asset in distribution.assetsMedia track by $index">{{asset.assetName}}</li>
+                    </ul>
+                </div>
+                <div ng-show="distribution.assetsImage.length > 0">
+                    <h5>Images</h5>
+                    <ul>
+                        <li ng-repeat="asset in distribution.assetsImage track by $index">{{asset.assetName}}</li>
+                    </ul>
+                </div>
+                <div ng-show="distribution.assetsOther.length > 0">
+                    <h5>Others</h5>
+                    <ul>
+                        <li ng-repeat="asset in distribution.assetsOther track by $index">{{asset.assetName}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="detail-main-col" ui-view></div>
+</div>

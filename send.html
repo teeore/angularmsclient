@@ -1,0 +1,111 @@
+<div class="row send-page" ng-init="sendBtnValidate()">
+    <div ng-include src="'modules/commons/newBtn.html'"></div>
+    <!-- left-column-->
+    <div class="left-col">
+        <div class="left-col-inner">
+            <!-- metadata and cover art-->
+            <div class="meta-data">
+                <div class="cover-art-wrapper">
+                    <image-select-drop ng-model="image.file" class="cover-drag-drop">
+                        <p>Drop cover art or click to upload</p>
+                    </image-select-drop>
+                </div>
+                <div ng-include src="'modules/metadata/metadata.html'" class="meta-data-form"></div>
+            </div>
+            <!-- from recipient -->
+            <div class="from-recipient" ng-show="sendAsSender.length > 1">
+                <p class="send-as-title">Send As: </p>
+                <select class="form-control" ng-model="selectedSender" ng-change="sendAs(selectedSender)" ng-options="sender for sender in sendAsSender">
+                </select>
+            </div>
+            <!-- TO RECIPIENT - COMPLETED -->
+            <div ng-include src="'modules/recipients/recipients.html'"></div>
+            <div class="send-drafts">
+                <h4>Drafts</h4>
+                <ul>
+                    <li ng-repeat="draft in draftList track by $index">
+                        <div class="draft-items">
+                            <a href="{{draft.link.draftUrl}}" ng-click="draftSelected('{{draft.link.self}}')">{{draft.title}}</a>
+                        </div>
+                        <span class="remove-btn">
+                    </span>
+                    </li>
+                </ul>
+                <p>
+                    <a class="get-draft" ui-sref="main.packages.Drafts">more...</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- middle column -->
+    <div class="main-col" ng-hide="hideMainColumn" id="send-main-col">
+        <div class="toolbar">
+            <!-- send button -->
+            <div class="list-send pull-left" ng-controller="jwtAuthenticationCtrl">
+                <a ui-sref="main.packages.All" ng-show="scheduleOn ==false">
+                    <button class="send-btn" ng-class="validatePage()" ng-controller="packageOptionsCtrl" ng-click="userReLoginSinceTokenIsExpired(); checkValidation(); sendPkg()" ng-disabled="isDisabled">SEND</button>
+                </a>
+                <a ui-sref="main.packages.All" ng-show="scheduleOn == true">
+                    <button class="send-btn" ng-class="validatePage()" ng-controller="packageOptionsCtrl" ng-click="userReLoginSinceTokenIsExpired(); checkValidation()" ng-disabled="isDisabled">SCHEDULE</button>
+                </a>
+            </div>
+            <!-- date/time picker -->
+            <div class="datepicker-section pull-left">
+                <form name="timepickerForm" class="form-inline" role="form">
+                    <div class="form-group date-time">
+                        <label class="control-label"> On: </label>
+                        <div class="form-group" id="cal-form">
+                            <input type="text" id="datepicker" size="10" class="form-control" ng-model="sharedDate" data-min-date="today" data-autoclose="1" placeholder="Date" ng-focus="showTime=true" ng-change="dateTimeChange()" bs-datepicker />
+                            </span>
+                        </div>
+                        <div class="form-group" ng-show="showTime">
+                            <input type="text" class="form-control" size="8" ng-model="time" name="time" ng-change="dateTimeChange()" bs-timepicker data-time-format="hh:mma" data-length="1" data-minute-step="1" data-arrow-behavior="picker">
+                            <a class="send-now" ng-click="resetDateTime()" href="">Send Now</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- OPTIONS - COMPLETED-->
+            <div ng-include src=" 'modules/packageOptions/packageOptions.html' "></div>
+            <!-- close button -->
+            <div class="close-btn-wrapper">
+                <a href="#/packages">
+                    <div class="close-btn" bs-tooltip title="Save and Close"></div>
+                </a>
+                <a href="">
+                    <div class="send-del-btn" bs-tooltip title="Discard Draft" ng-click="deleteCurrent(detail)"></div>
+                </a>
+            </div>
+        </div>
+        <!-- SUBJECT - COMPLETED -->
+        <div ng-include src=" 'modules/notification/subject.html' "></div>
+        <div class="clear"></div>
+        <div id="msg-body">
+            <textarea id="emailEditor" class="ckeditor" ctrl="notificationCtrl" ck_edit ng-model="ckEdit.data"></textarea>
+        </div>
+    </div>
+    <!-- right-column -->
+    <div ng-class="{ 'right-col': !hideMainColumn, 'right-col-wide': hideMainColumn} ">
+        <div class="arrow-wrapper" ng-style="{height: arrowHeight}" ng-click="hideMainColumn=! hideMainColumn ">
+            <div class="assets-arrow" ng-class="{ 'assets-arrow-left':!hideMainColumn, 'assets-arrow-right':hideMainColumn }">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div back-to-top ready="{{hideMainColumn}}" id="main-assets-list" ng-class="{ 'assets-container': !hideMainColumn, 'assets-container-wide': hideMainColumn}">
+            <div class="assets-title">
+                <p>assets
+                    <file-list-select-button ng-model="files.list">
+                        <span><a href="javascript:void(0)" bs-tooltip title="Upload asset"> <img id="add-asset" src="images/plus.png"/></a></span>
+                    </file-list-select-button>
+                </p>
+            </div>
+            <div class="assets">
+                <file-list-select-drop class="asset-drag-drop" ng-model="files.list">
+                    <div ng-hide="filesLength" class="drop-msg">Drop assets here</div>
+                    <file-list ng-model="files.list"></file-list>
+                </file-list-select-drop>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>

@@ -1,0 +1,24 @@
+<div class="container-fluid fill login-page" ng-app="studiocdnWebApp">
+    <div class="row" ng-controller="jwtAuthenticationCtrl">
+        <div class="login" ng-controller="UserAuthenticationCtrl">
+            <h3><img src="images/logo-studiocdn.png" >
+            <span>Web Client Login</span>
+            </h3>
+            <form name="authenticate-form" novalidate>
+                <input type="email" ng-model="creds.email" name="email" placeholder="Email address" class="form-control login-email" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" required/>
+                <br />
+                <input class="form-control" type="password" ng-model="creds.pswd" placeholder="Password" />
+                <button class="all-btns" id="login-btn" ng-click="userLogin();">LOGIN</button>
+                <a class="forgot-pswd" href="/#/recover">Forgot Password?</a>
+            </form>
+            <div class="login-error">
+                {{authMessage}}
+            </div>
+            <div class="new-acct">
+                <a href="http://www.studiocdn.com/free-trial/" target="_blank"> CREATE A FREE ACCOUNT</a>
+                <p>New to StudioCDN? Sign up for a
+                    <br>free trial account now</p>
+            </div>
+        </div>
+    </div>
+</div>

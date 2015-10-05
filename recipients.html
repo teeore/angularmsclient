@@ -1,0 +1,15 @@
+<div ng-controller="RecipientsCtrl" class="recipients-wrapper" ng-init='initAutoSuggest()'>
+    <typeahead items="items" prompt="To" title="name" subtitle="email" model="name"></typeahead>
+    <input type="file" id="distr-upload" ng-model="recipient.csvFile" name="distr-upload" onchange="angular.element(this).scope().onCsvFileChangeFunc(this.files)" style="visibility: hidden; width: 1px; height: 1px" />
+    <div id="distribution">
+        <ul id="distribution-lists" ng-hide="recipientList.length == 0">
+            <li ng-repeat="recipient in recipientList track by $index">
+                <div class="recipient-items">{{recipient}}</div>
+                <span class="remove-btn" ng-click="removeRecp($index)"></span>
+            </li>
+        </ul>
+    </div>
+    <div id="clear-recp" ng-hide="recipientList.length == 0">
+        <a ng-click="removeAllRecp()" href="">clear all</a>
+    </div>
+</div>
